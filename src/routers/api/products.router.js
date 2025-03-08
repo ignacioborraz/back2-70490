@@ -2,7 +2,7 @@ import { Router } from "express";
 
 const productsRouter = Router();
 
-const create = () => {};
+const createOne = () => {};
 const readAll = () => {};
 const readById = () => {};
 const updateById = () => {};
