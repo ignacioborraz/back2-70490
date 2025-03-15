@@ -10,7 +10,7 @@ const createOne = async (req, res, next) => {
     res.status(201).json({
       response,
       method: req.method,
-      url: req.url,
+      url: req.originalUrl,
     });
   } catch (error) {
     next(error);
@@ -28,7 +28,7 @@ const readAll = async (req, res, next) => {
     res.status(200).json({
       response,
       method: req.method,
-      url: req.url,
+      url: req.originalUrl,
     });
   } catch (error) {
     next(error);
@@ -46,7 +46,7 @@ const readById = async (req, res, next) => {
     res.status(200).json({
       response,
       method: req.method,
-      url: req.url,
+      url: req.originalUrl,
     });
   } catch (error) {
     next(error);
@@ -56,16 +56,17 @@ const updateById = async (req, res, next) => {
   try {
     const { uid } = req.params;
     const data = req.body;
-    const response = await usersManager.readById(uid, data);
+    const response = await usersManager.readById(uid);
     if (!response) {
       const error = new Error("Not found");
       error.statusCode = 404;
       throw error;
     }
+    await usersManager.updateById(uid, data);
     res.status(200).json({
       response,
       method: req.method,
-      url: req.url,
+      url: req.originalUrl,
     });
   } catch (error) {
     next(error);
@@ -80,10 +81,11 @@ const destroyById = async (req, res, next) => {
       error.statusCode = 404;
       throw error;
     }
+    await usersManager.destroyById(uid);
     res.status(200).json({
       response,
       method: req.method,
-      url: req.url,
+      url: req.originalUrl,
     });
   } catch (error) {
     next(error);
