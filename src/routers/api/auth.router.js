@@ -1,14 +1,13 @@
 import { Router } from "express";
-import { usersManager } from "../../data/mongo/manager.mongo.js";
+import passport from "../../middlewares/passport.mid.js";
 
 const authRouter = Router();
 
 const register = async (req, res, next) => {
   try {
-    const data = req.body;
-    /* validar propiedades obligatorio */
-    /* proteger la contraseña */
-    const response = await usersManager.createOne(data);
+    /* passport done(null, response) agrega al objeto req, la propiedad user */
+    /* con los datos correspondientes del usuario */
+    const response = req.user;
     res.status(201).json({
       response,
       method: req.method,
@@ -20,17 +19,9 @@ const register = async (req, res, next) => {
 };
 const login = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
-    /* validar la contraseña */
-    const response = await usersManager.readBy({ email });
-    if (response.password !== password) {
-      const error = new Error("Invalid credentials");
-      error.statusCode = 401;
-      throw error;
-    }
-    req.session.user_id = response._id;
-    req.session.email = email;
-    req.session.role = response.role;
+    /* passport done(null, response) agrega al objeto req, la propiedad user */
+    /* con los datos correspondientes del usuario */
+    const response = req.user;
     res.status(200).json({
       response,
       method: req.method,
@@ -69,10 +60,34 @@ const signout = async (req, res, next) => {
     next(error);
   }
 };
+const badAuth = async (req, res, next) => {
+  try {
+    const error = new Error("Bad auth from redirect");
+    error.statusCode = 401;
+    throw error;
+  } catch (error) {
+    next(error);
+  }
+};
 
-authRouter.post("/register", register);
-authRouter.post("/login", login);
+authRouter.post(
+  "/register",
+  passport.authenticate("register", {
+    session: false,
+    failureRedirect: "/api/auth/bad-auth",
+  }),
+  register
+);
+authRouter.post(
+  "/login",
+  passport.authenticate("login", {
+    session: false,
+    failureRedirect: "/api/auth/bad-auth",
+  }),
+  login
+);
 authRouter.post("/online", online);
 authRouter.post("/signout", signout);
+authRouter.get("/bad-auth", badAuth);
 
 export default authRouter;
