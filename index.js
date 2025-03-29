@@ -13,10 +13,10 @@ import pathHandler from "./src/middlewares/pathHandler.mid.js";
 
 /* server */
 const server = express();
-const port = 8080;
+const port = process.env.PORT || 8080;
 const ready = () => {
   console.log("server ready on port " + port);
-  dbConnect();
+  dbConnect(process.env.MONGO_URL);
 };
 server.listen(port, ready);
 
