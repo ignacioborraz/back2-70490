@@ -1,5 +1,6 @@
 import { Router } from "express";
 import passport from "../../middlewares/passport.mid.js";
+import passportCb from "../../middlewares/passportCb.mid.js";
 
 const authRouter = Router();
 
@@ -81,34 +82,30 @@ const google = async (req, res, next) => {
 
 authRouter.post(
   "/register",
-  passport.authenticate("register", {
-    session: false,
-    failureRedirect: "/api/auth/bad-auth",
-  }),
+  //passport.authenticate("register", {
+    //session: false,
+    //failureRedirect: "/api/auth/bad-auth",
+  //}),
+  passportCb("register"),
   register
 );
 authRouter.post(
   "/login",
-  passport.authenticate("login", {
-    session: false,
-    failureRedirect: "/api/auth/bad-auth",
-  }),
+  //passport.authenticate("login", {
+    //session: false,
+    //failureRedirect: "/api/auth/bad-auth",
+  //}),
+  passportCb("login"),
   login
 );
 authRouter.post(
   "/online",
-  passport.authenticate("current", {
-    session: false,
-    failureRedirect: "/api/auth/bad-auth",
-  }),
+  passportCb("current"),
   online
 );
 authRouter.post(
   "/signout",
-  passport.authenticate("current", {
-    session: false,
-    failureRedirect: "/api/auth/bad-auth",
-  }),
+  passportCb("current"),
   signout
 );
 authRouter.get("/bad-auth", badAuth);

@@ -20,15 +20,20 @@ passport.use(
       try {
         const data = req.body;
         if (!data.city) {
-          const error = new Error("Invalid data");
-          error.statusCode = 400;
-          throw error;
+          //const error = new Error("Invalid data");
+          //error.statusCode = 400;
+          //throw error;
+          return done(null, null, { message: "Invalid data", statusCode: 400 });
         }
         const user = await usersManager.readBy({ email });
         if (user) {
-          const error = new Error("Invalid credentials");
-          error.statusCode = 401;
-          throw error;
+          //const error = new Error("Invalid credentials");
+          //error.statusCode = 401;
+          //throw error;
+          return done(null, null, {
+            message: "Invalid credentials",
+            statusCode: 401,
+          });
         }
         data.password = createHash(password);
         const response = await usersManager.createOne(data);
@@ -47,15 +52,17 @@ passport.use(
       try {
         const response = await usersManager.readBy({ email });
         if (!response) {
-          const error = new Error("Invalid credentials");
-          error.statusCode = 401;
-          throw error;
+          return done(null, null, {
+            message: "Invalid credentials",
+            statusCode: 401,
+          });
         }
         const verify = verifyHash(password, response.password);
         if (!verify) {
-          const error = new Error("Invalid credentials");
-          error.statusCode = 401;
-          throw error;
+          return done(null, null, {
+            message: "Invalid credentials",
+            statusCode: 401,
+          });
         }
         const data = {
           user_id: response._id,
@@ -105,7 +112,7 @@ passport.use(
   new JwtStrategy(
     /* objeto de configuracion de la estrategia */
     {
-      jwtFromRequest: ExtractJwt.fromExtractors([req=> req?.cookies?.token]),
+      jwtFromRequest: ExtractJwt.fromExtractors([(req) => req?.cookies?.token]),
       secretOrKey: SECRET,
     },
     /* callback con la logica de la estrategia */
@@ -114,9 +121,7 @@ passport.use(
         const { user_id } = data;
         const user = await usersManager.readById(user_id);
         if (!user) {
-          const error = new Error("Bad auth");
-          error.statusCode = 401;
-          throw error;
+          return done(null, null, { message: "Bad auth", statusCode: 401 });
         }
         done(null, user);
       } catch (error) {
@@ -133,7 +138,7 @@ passport.use(
   new JwtStrategy(
     /* objeto de configuracion de la estrategia */
     {
-      jwtFromRequest: ExtractJwt.fromExtractors([req=> req?.cookies?.token]),
+      jwtFromRequest: ExtractJwt.fromExtractors([(req) => req?.cookies?.token]),
       secretOrKey: SECRET,
     },
     /* callback con la logica de la estrategia */
@@ -142,14 +147,10 @@ passport.use(
         const { user_id } = data;
         const user = await usersManager.readById(user_id);
         if (!user) {
-          const error = new Error("Bad auth");
-          error.statusCode = 401;
-          throw error;
+          return done(null, null, { message: "Bad auth", statusCode: 401 });
         }
         if (user.role !== "ADMIN") {
-          const error = new Error("Forbidden");
-          error.statusCode = 403;
-          throw error;
+          return done(null, null, { message: "Forbidden", statusCode: 403 });
         }
         done(null, user);
       } catch (error) {
