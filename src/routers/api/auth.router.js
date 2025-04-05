@@ -1,12 +1,11 @@
 import { Router } from "express";
 import passport from "../../middlewares/passport.mid.js";
+import isUser from "../../middlewares/isUser.mid.js";
 
 const authRouter = Router();
 
 const register = async (req, res, next) => {
   try {
-    /* passport done(null, response) agrega al objeto req, la propiedad user */
-    /* con los datos correspondientes del usuario */
     const response = req.user;
     res.status(201).json({
       response,
@@ -19,10 +18,10 @@ const register = async (req, res, next) => {
 };
 const login = async (req, res, next) => {
   try {
-    /* passport done(null, response) agrega al objeto req, la propiedad user */
-    /* con los datos correspondientes del usuario */
     const response = req.user;
+    const token = req.token;
     res.status(200).json({
+      token,
       response,
       method: req.method,
       url: req.originalUrl,
@@ -33,9 +32,9 @@ const login = async (req, res, next) => {
 };
 const online = async (req, res, next) => {
   try {
-    if (req.session.user_id) {
+    if (req.user._id) {
       res.status(200).json({
-        user_id: req.session.user_id,
+        user_id: req.user._id,
         method: req.method,
         url: req.originalUrl,
       });
@@ -69,6 +68,18 @@ const badAuth = async (req, res, next) => {
     next(error);
   }
 };
+const google = async (req, res, next) => {
+  try {
+    const response = req.user;
+    res.status(200).json({
+      response,
+      method: req.method,
+      url: req.originalUrl,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 authRouter.post(
   "/register",
@@ -86,8 +97,25 @@ authRouter.post(
   }),
   login
 );
-authRouter.post("/online", online);
-authRouter.post("/signout", signout);
+authRouter.post("/online", isUser, online);
+authRouter.post("/signout", isUser, signout);
 authRouter.get("/bad-auth", badAuth);
+/* primera ruta de google para acceder a la pantalla de consentimiento y acceder al objeto profile de google con los datos del usuario */
+authRouter.get(
+  "/google",
+  passport.authenticate("google", {
+    scope: ["email", "profile"],
+    failureRedirect: "/api/auth/bad-auth",
+  })
+);
+/* segunda ruta de google para acceder a la logica de la estrategia con los datos del profile del usuario */
+authRouter.get(
+  "/google/cb",
+  passport.authenticate("google", {
+    session: false,
+    failureRedirect: "/api/auth/bad-auth",
+  }),
+  google
+);
 
 export default authRouter;

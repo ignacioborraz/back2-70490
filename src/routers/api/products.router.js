@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { productsManager } from "../../data/mongo/manager.mongo.js";
+import isAdmin from "../../middlewares/isAdmin.mid.js";
 
 const productsRouter = Router();
 
@@ -92,10 +93,10 @@ const destroyById = async (req, res, next) => {
   }
 };
 
-productsRouter.post("/", createOne);
+productsRouter.post("/", isAdmin, createOne);
 productsRouter.get("/", readAll);
 productsRouter.get("/:pid", readById);
-productsRouter.put("/:pid", updateById);
-productsRouter.delete("/:pid", destroyById);
+productsRouter.put("/:pid", isAdmin, updateById);
+productsRouter.delete("/:pid", isAdmin, destroyById);
 
 export default productsRouter;

@@ -16,11 +16,11 @@ document.querySelector("#login").addEventListener("click", async () => {
     if (response.error) {
       alert(response.error);
     } else {
-      localStorage.setItem("token", response.token);
+      localStorage.setItem("token", response.response)
       location.replace("/");
     }
   } catch (error) {
     console.log(error);
-    alert(error);
+    alert(error.error);
   }
 });

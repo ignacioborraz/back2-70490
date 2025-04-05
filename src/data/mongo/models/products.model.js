@@ -10,7 +10,7 @@ const schema = new Schema(
     price: { type: Number, default: 10 },
     stock: { type: Number, default: 10 },
     onsale: { type: Boolean, default: false },
-    owner_id: { type: Types.ObjectId, ref: "users", required: true, index: true },
+    owner_id: { type: Types.ObjectId, ref: "users", index: true },
   },
   { timestamps: true }
 );
