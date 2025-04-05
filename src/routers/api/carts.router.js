@@ -10,43 +10,24 @@ const addProductToCart = async (req, res) => {
     user_id,
     quantity
   );
-  res.status(201).json({
-    method: req.method,
-    url: req.url,
-    response: one,
-  });
+  res.json201(response)
 };
 const readProductsFromUser = async (req, res) => {
   const user_id = req.user._id;
-  console.log({ user_id });
-
   const all = await cartsManager.readProductsFromUser(user_id);
-  console.log({ all });
-  if (all.length > 0) {
-    return res.status(200).json({
-      method: req.method,
-      url: req.url,
-      response: all,
-    });
+  if (all.length === 0) {
+    res.json404()
   }
-  const error = new Error("Not Found!");
-  error.statusCode = 404;
-  throw error;
+  res.json200(all)
 };
 const updateQuantity = async (req, res) => {
   const { id } = req.params;
   const { quantity } = req.body;
   const one = await cartsManager.updateQuantity(id, quantity);
-  if (one) {
-    return res.status(200).json({
-      method: req.method,
-      url: req.url,
-      response: one,
-    });
+  if (!one) {
+    res.json404()
   }
-  const error = new Error("Not Found!");
-  error.statusCode = 404;
-  throw error;
+  res.json200(one)
 };
 const updateState = async (req, res) => {
   const { id, state } = req.params;
@@ -54,33 +35,19 @@ const updateState = async (req, res) => {
   if (states.includes(state)) {
     const one = await cartsManager.updateState(id, state);
     if (one) {
-      return res.status(200).json({
-        method: req.method,
-        url: req.url,
-        response: one,
-      });
+      return res.json200(one)
     }
-    const error = new Error("Not Found!");
-    error.statusCode = 404;
-    throw error;
+    res.json404()
   }
-  const error = new Error("Invalid state!");
-  error.statusCode = 400;
-  throw error;
+  res.json400("Invalid state!")
 };
 const removeProductFromCart = async (req, res) => {
   const { id } = req.params;
   const one = await cartsManager.removeProductFromCart(id);
-  if (one) {
-    return res.status(200).json({
-      method: req.method,
-      url: req.url,
-      response: one,
-    });
+  if (!one) {
+    res.json404()
   }
-  const error = new Error("Not Found!");
-  error.statusCode = 404;
-  throw error;
+  res.json200(one)
 };
 
 class CartsRouter extends CustomRouter {
@@ -89,11 +56,11 @@ class CartsRouter extends CustomRouter {
     this.init();
   }
   init = () => {
-    this.create("/", isUser, addProductToCart);
-    this.read("/", isUser, readProductsFromUser);
-    this.update("/:id", isUser, updateQuantity);
-    this.update("/:id/:state", isUser, updateState);
-    this.destroy("/:id", isUser, removeProductFromCart);
+    this.create("/", ["USER"], addProductToCart);
+    this.read("/", ["USER"], readProductsFromUser);
+    this.update("/:id", ["USER"], updateQuantity);
+    this.update("/:id/:state", ["USER"], updateState);
+    this.destroy("/:id", ["USER"], removeProductFromCart);
     this.router.param("id", (req, res, next, id) => {
       try {
         if (!Types.ObjectId.isValid(id)) {

@@ -6,70 +6,40 @@ import { Types } from "mongoose";
 const createOne = async (req, res) => {
   const data = req.body;
   const response = await productsManager.createOne(data);
-  res.status(201).json({
-    response,
-    method: req.method,
-    url: req.originalUrl,
-  });
+  res.json201(response)
 };
 const readAll = async (req, res) => {
   const filter = req.query;
   const response = await productsManager.readAll(filter);
   if (response.length === 0) {
-    const error = new Error("Not found");
-    error.statusCode = 404;
-    throw error;
+    res.json404()
   }
-  res.status(200).json({
-    response,
-    method: req.method,
-    url: req.originalUrl,
-  });
+  res.json200(response)
 };
 const readById = async (req, res) => {
   const { pid } = req.params;
   const response = await productsManager.readById(pid);
   if (!response) {
-    const error = new Error("Not found");
-    error.statusCode = 404;
-    throw error;
+    res.json404()
   }
-  res.status(200).json({
-    response,
-    method: req.method,
-    url: req.originalUrl,
-  });
+  res.json200(response)
 };
 const updateById = async (req, res) => {
   const { pid } = req.params;
   const data = req.body;
   const response = await productsManager.readById(pid);
   if (!response) {
-    const error = new Error("Not found");
-    error.statusCode = 404;
-    throw error;
+    res.json404()
   }
-  await productsManager.updateById(pid, data);
-  res.status(200).json({
-    response,
-    method: req.method,
-    url: req.originalUrl,
-  });
+  res.json200(response)
 };
 const destroyById = async (req, res) => {
   const { pid } = req.params;
   const response = await productsManager.destroyById(pid);
   if (!response) {
-    const error = new Error("Not found");
-    error.statusCode = 404;
-    throw error;
+    res.json404()
   }
-  await productsManager.destroyById(pid);
-  res.status(200).json({
-    response,
-    method: req.method,
-    url: req.originalUrl,
-  });
+  res.json200(response)
 };
 const pidParam = (req, res, next, pid) => {
   try {
@@ -89,11 +59,11 @@ class ProductsRouter extends CustomRouter {
     this.init();
   }
   init = () => {
-    this.create("/", passportCb("admin"), createOne);
-    this.read("/", readAll);
-    this.read("/:pid", readById);
-    this.update("/:pid", passportCb("admin"), updateById);
-    this.destroy("/:pid", passportCb("admin"), destroyById);
+    this.create("/", ["ADMIN"], createOne);
+    this.read("/", ["PUBLIC"], readAll);
+    this.read("/:pid", ["PUBLIC"], readById);
+    this.update("/:pid", ["ADMIN"], updateById);
+    this.destroy("/:pid", ["ADMIN"], destroyById);
     this.router.param("pid", pidParam);
   };
 }
