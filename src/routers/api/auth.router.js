@@ -1,6 +1,5 @@
 import { Router } from "express";
 import passport from "../../middlewares/passport.mid.js";
-import isUser from "../../middlewares/isUser.mid.js";
 
 const authRouter = Router();
 
@@ -20,8 +19,8 @@ const login = async (req, res, next) => {
   try {
     const response = req.user;
     const token = req.token;
-    res.status(200).json({
-      token,
+    const opts = { maxAge: 60 * 60 * 24 * 7, httpOnly: true };
+    res.cookie("token", token, opts).status(200).json({
       response,
       method: req.method,
       url: req.originalUrl,
@@ -49,8 +48,7 @@ const online = async (req, res, next) => {
 };
 const signout = async (req, res, next) => {
   try {
-    req.session.destroy();
-    res.status(200).json({
+    res.clearCookie("token").status(200).json({
       message: "Signed out",
       method: req.method,
       url: req.originalUrl,
@@ -97,8 +95,22 @@ authRouter.post(
   }),
   login
 );
-authRouter.post("/online", isUser, online);
-authRouter.post("/signout", isUser, signout);
+authRouter.post(
+  "/online",
+  passport.authenticate("current", {
+    session: false,
+    failureRedirect: "/api/auth/bad-auth",
+  }),
+  online
+);
+authRouter.post(
+  "/signout",
+  passport.authenticate("current", {
+    session: false,
+    failureRedirect: "/api/auth/bad-auth",
+  }),
+  signout
+);
 authRouter.get("/bad-auth", badAuth);
 /* primera ruta de google para acceder a la pantalla de consentimiento y acceder al objeto profile de google con los datos del usuario */
 authRouter.get(

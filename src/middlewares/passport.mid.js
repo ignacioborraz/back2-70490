@@ -97,13 +97,18 @@ passport.use(
     }
   )
 );
+/* middleware para verificar que el ususario es parte de nuestra app */
 passport.use(
-  "auth",
+  /* nombre de la estrategia */
+  "current",
+  /* constructor de la estrategia */
   new JwtStrategy(
+    /* objeto de configuracion de la estrategia */
     {
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: ExtractJwt.fromExtractors([req=> req?.cookies?.token]),
       secretOrKey: SECRET,
     },
+    /* callback con la logica de la estrategia */
     async (data, done) => {
       try {
         const { user_id } = data;
@@ -113,33 +118,42 @@ passport.use(
           error.statusCode = 401;
           throw error;
         }
-        return done(null, user);
+        done(null, user);
       } catch (error) {
-        return done(error);
+        done(error);
       }
     }
   )
 );
-
+/* middlewares para verificar que el usuario es admin de nuestra app */
 passport.use(
+  /* nombre de la estrategia */
   "admin",
+  /* constructor de la estrategia */
   new JwtStrategy(
+    /* objeto de configuracion de la estrategia */
     {
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: ExtractJwt.fromExtractors([req=> req?.cookies?.token]),
       secretOrKey: SECRET,
     },
+    /* callback con la logica de la estrategia */
     async (data, done) => {
       try {
-        const { user_id, role } = data;
+        const { user_id } = data;
         const user = await usersManager.readById(user_id);
-        if (user.role !== "admin") {
+        if (!user) {
+          const error = new Error("Bad auth");
+          error.statusCode = 401;
+          throw error;
+        }
+        if (user.role !== "ADMIN") {
           const error = new Error("Forbidden");
           error.statusCode = 403;
           throw error;
         }
-        return done(null, user);
+        done(null, user);
       } catch (error) {
-        return done(error);
+        done(error);
       }
     }
   )
