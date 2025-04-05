@@ -20,12 +20,12 @@ const createToken = (data) => {
 /**
  * @verifyToken
  * recibe un token y lo verifica
- * devuelve el booleano correspondiente
+ * devuelve el booleanola información correspondiente
  */
 const verifyToken = (token) => {
   try {
-    const verify = jsonwebtoken.verify(token, process.env.SECRET);
-    return verify;
+    const data = jsonwebtoken.verify(token, process.env.SECRET);
+    return data;
   } catch (error) {
     error.statusCode = 401;
     throw error;

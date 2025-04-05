@@ -1,11 +1,15 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as GoogleStrategy } from "passport-google-oauth2";
-import { usersManager } from "../data/mongo/manager.mongo.js";
+import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
+import { usersManager } from "../data/mongo/managers/manager.mongo.js";
 import { createHash, verifyHash } from "../helpers/hash.helper.js";
 import { createToken } from "../helpers/token.helper.js";
-const clientID = process.env.GOOGLE_ID;
-const clientSecret = process.env.GOGGLE_SECRET;
+const {
+  SECRET,
+  GOOGLE_ID: clientID,
+  GOGGLE_SECRET: clientSecret,
+} = process.env;
 const callbackURL = "http://localhost:8080/api/auth/google/cb";
 
 passport.use(
@@ -89,6 +93,53 @@ passport.use(
         done(null, user);
       } catch (error) {
         done(error);
+      }
+    }
+  )
+);
+passport.use(
+  "auth",
+  new JwtStrategy(
+    {
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      secretOrKey: SECRET,
+    },
+    async (data, done) => {
+      try {
+        const { user_id } = data;
+        const user = await usersManager.readById(user_id);
+        if (!user) {
+          const error = new Error("Bad auth");
+          error.statusCode = 401;
+          throw error;
+        }
+        return done(null, user);
+      } catch (error) {
+        return done(error);
+      }
+    }
+  )
+);
+
+passport.use(
+  "admin",
+  new JwtStrategy(
+    {
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      secretOrKey: SECRET,
+    },
+    async (data, done) => {
+      try {
+        const { user_id, role } = data;
+        const user = await usersManager.readById(user_id);
+        if (user.role !== "admin") {
+          const error = new Error("Forbidden");
+          error.statusCode = 403;
+          throw error;
+        }
+        return done(null, user);
+      } catch (error) {
+        return done(error);
       }
     }
   )

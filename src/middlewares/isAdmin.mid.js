@@ -1,3 +1,4 @@
+import { usersManager } from "../data/mongo/managers/manager.mongo.js";
 import { verifyToken } from "../helpers/token.helper.js";
 
 /**
@@ -6,7 +7,7 @@ import { verifyToken } from "../helpers/token.helper.js";
  * deja pasar sólo si el usuario es de role="admin"
  * en cualquier otra caso construye el error correspondiente
  */
-const isAdmin = (req, res, next) => {
+const isAdmin = async (req, res, next) => {
   try {
     const headers = req?.headers?.authorization;
     //console.log(headers);
@@ -22,6 +23,8 @@ const isAdmin = (req, res, next) => {
       error.statusCode = 403;
       throw error;
     }
+    const user = await usersManager.readById(data.user_id);
+    req.user = user;
     next();
   } catch (error) {
     next(error);
