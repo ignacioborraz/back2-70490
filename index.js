@@ -1,4 +1,4 @@
-import "dotenv/config.js";
+import "./src/helpers/setEnv.helper.js"
 import express from "express";
 import { engine } from "express-handlebars";
 import cookieParser from "cookie-parser";
@@ -8,12 +8,14 @@ import dbConnect from "./src/helpers/dbConnect.helper.js";
 import router from "./src/routers/index.router.js";
 import errorHandler from "./src/middlewares/errorHandler.mid.js";
 import pathHandler from "./src/middlewares/pathHandler.mid.js";
+import args from "./src/helpers/setArgs.helper.js";
 
 /* server settings */
 const server = express();
 const port = process.env.PORT || 8080;
 const ready = () => {
   console.log("server ready on port " + port);
+  console.log("server ready on mode " + args.mode);
   dbConnect(process.env.MONGO_URL);
 };
 server.listen(port, ready);
@@ -34,3 +36,7 @@ server.use(cookieParser(process.env.COOKIE_KEY));
 server.use("/", router);
 server.use(errorHandler);
 server.use(pathHandler);
+
+//console.log(process.pid);
+//console.log(process.platform);
+//console.log(process.argv);
