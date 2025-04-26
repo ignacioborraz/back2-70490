@@ -25,10 +25,9 @@ class FileManager {
 
   createOne = async (data) => {
     const items = await this._readFile();
-    const newItem = { _id: crypto.randomBytes(12).toString("hex"), ...data };
-    items.push(newItem);
+    items.push(data);
     await this._writeFile(items);
-    return newItem;
+    return data;
   };
   readAll = async (filter = {}) => {
     const items = await this._readFile();

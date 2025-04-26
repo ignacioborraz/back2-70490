@@ -15,7 +15,7 @@ const setupPolicies = (policies) => async (req, res, next) => {
       req.user = data;
       return next();
     } else {
-      res.json(403);
+      res.json403();
     }
   } catch (error) {
     next(error)

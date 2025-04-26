@@ -1,1 +1,49 @@
-[]
+[
+  {
+    "_id": "8bca0be59de9ae47da905386",
+    "title": "product 6",
+    "image": "https://images.twinkl.co.uk/tw1n/image/private/t_630/u/ux/pc_ver_1.png",
+    "category": "Smartphones"
+  },
+  {
+    "_id": "e0e2016a406e53f9f07551a1",
+    "title": "product 5",
+    "image": "https://images.twinkl.co.uk/tw1n/image/private/t_630/u/ux/pc_ver_1.png",
+    "category": "Smartphones"
+  },
+  {
+    "_id": "6b4defe4022e181c8bb9ed01",
+    "title": "product 4",
+    "image": "https://images.twinkl.co.uk/tw1n/image/private/t_630/u/ux/pc_ver_1.png",
+    "category": "Smartphones"
+  },
+  {
+    "_id": "41cab57d2dcdb303e66369b4",
+    "title": "product 3",
+    "image": "https://images.twinkl.co.uk/tw1n/image/private/t_630/u/ux/pc_ver_1.png",
+    "category": "Smartphones"
+  },
+  {
+    "_id": "b4dee80628095e6ddd46b093",
+    "title": "product 2",
+    "image": "https://images.twinkl.co.uk/tw1n/image/private/t_630/u/ux/pc_ver_1.png",
+    "category": "Smartphones"
+  },
+  {
+    "_id": "16bf8543990f34877db255c9",
+    "title": "product 1",
+    "image": "https://images.twinkl.co.uk/tw1n/image/private/t_630/u/ux/pc_ver_1.png",
+    "category": "Smartphones"
+  },
+  {
+    "_id": "c63a6aceec2e9db6b91eb88f",
+    "title": "product 1",
+    "category": "Smartphones",
+    "image": "https://images.twinkl.co.uk/tw1n/image/private/t_630/u/ux/pc_ver_1.png",
+    "price": 10,
+    "stock": 10,
+    "onsale": false,
+    "createdAt": "2025-04-26T17:55:33.855Z",
+    "updatedAt": "2025-04-26T17:55:33.855Z"
+  }
+]

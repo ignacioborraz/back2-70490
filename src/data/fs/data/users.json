@@ -1,0 +1,61 @@
+[
+  {
+    "_id": "f2cc54ed2e21bf2ea6c7dd04",
+    "email": "igna@coder.com",
+    "password": "$2b$10$mHg.8BJ.IDIzxcEcKcRif.4yErgRZ1b3bJyV0C.OdEQcr0BaUiYQO",
+    "city": "rosario",
+    "role": "ADMIN"
+  },
+  {
+    "_id": "2ccd07df99a7b904892297e8",
+    "email": "sol@coder.com",
+    "password": "$2b$10$7bKwtGuTW3eUOzdkThRETONYzC5ZZDmVj7fKsAY9OJ7dqbtuSc6Ni",
+    "city": "rosario",
+    "role": "USER"
+  },
+  {
+    "_id": "d2947a23ab9824ff64b1550a",
+    "email": "santi@coder.com",
+    "password": "$2b$10$AFKUbC4tKr05W32O/v57nOzdJrWJSSJ1TTxduxAx1xT7YcPT.DqJG",
+    "avatar": "https://cdn-icons-png.flaticon.com/512/266/266033.png",
+    "role": "USER",
+    "createdAt": "2025-04-26T17:59:42.111Z",
+    "updatedAt": "2025-04-26T17:59:42.111Z"
+  },
+  {
+    "_id": "5522c140d99d258738e3c02a",
+    "email": "jona@coder.com",
+    "password": "$2b$10$flF2O0w5UTbXQeSMVXLqYu.9CEPFGAz.bH0qWOFNu4NLLIThL/ytW",
+    "avatar": "https://cdn-icons-png.flaticon.com/512/266/266033.png",
+    "role": "USER",
+    "createdAt": "2025-04-26T18:00:26.361Z",
+    "updatedAt": "2025-04-26T18:00:26.361Z"
+  },
+  {
+    "_id": "52236e960283347abb786c39",
+    "email": "maria@coder.com",
+    "password": "$2b$10$ZniRyyZBSzvyq4yydWRgTO/nJsNh2wDMl0AZ7nywjH.VNfYJHnsqG",
+    "avatar": "https://cdn-icons-png.flaticon.com/512/266/266033.png",
+    "role": "USER",
+    "createdAt": "2025-04-26T18:00:31.901Z",
+    "updatedAt": "2025-04-26T18:00:31.901Z"
+  },
+  {
+    "_id": "9a0e5b400a50ece42203a0ef",
+    "email": "belen@coder.com",
+    "password": "$2b$10$WhhsIUmJvvg.KNlF7AAt8OzyrqgVtVStKQAsnoXG1wv/YuOSx1Doy",
+    "avatar": "https://cdn-icons-png.flaticon.com/512/266/266033.png",
+    "role": "USER",
+    "createdAt": "2025-04-26T18:02:05.778Z",
+    "updatedAt": "2025-04-26T18:02:05.778Z"
+  },
+  {
+    "_id": "7e10be8a91dbdaaa2378f2a8",
+    "email": "silvia@coder.com",
+    "password": "$2b$10$74OUySmz3z9/ZOwXRIUouOrHkNxS5roTb5..oUonwp8nv0aOndKW6",
+    "avatar": "https://cdn-icons-png.flaticon.com/512/266/266033.png",
+    "role": "USER",
+    "createdAt": "2025-04-26T18:18:08.931Z",
+    "updatedAt": "2025-04-26T18:18:08.931Z"
+  }
+]

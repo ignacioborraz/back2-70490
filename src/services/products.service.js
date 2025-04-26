@@ -1,10 +1,16 @@
-import { productsManager } from "../data/fs/manager.fs.js";
+import {
+  createOneRep,
+  readAllRep,
+  readByIdRep,
+  updateByIdRep,
+  destroyByIdRep,
+} from "../repositories/products.rep.js";
 
-const createOneService = async (data) => await productsManager.createOne(data);
-const readAllService = async (filter) => await productsManager.readAll(filter);
-const readByIdService = async (pid) => await productsManager.readById(pid);
-const updateByIdService = async (pid) => await productsManager.updateById(pid, data);
-const destroyByIdService = async (pid) => await productsManager.destroyById(pid);
+const createOneService = async (data) => await createOneRep(data);
+const readAllService = async (filter) => await readAllRep(filter);
+const readByIdService = async (pid) => await readByIdRep(pid);
+const updateByIdService = async (pid) => await updateByIdRep(pid, data);
+const destroyByIdService = async (pid) => await destroyByIdRep(pid);
 
 export {
   createOneService,

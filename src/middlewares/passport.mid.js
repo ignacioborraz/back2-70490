@@ -2,9 +2,12 @@ import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as GoogleStrategy } from "passport-google-oauth2";
 import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
-import { usersManager } from "../data/mongo/managers/manager.mongo.js";
+//import { usersManager } from "../data/mongo/managers/manager.mongo.js";
+import { usersManager } from "../data/dao.factory.js";
 import { createHash, verifyHash } from "../helpers/hash.helper.js";
 import { createToken } from "../helpers/token.helper.js";
+import UserDTO from "../dto/users.dto.js";
+
 const {
   SECRET,
   GOOGLE_ID: clientID,
@@ -18,7 +21,7 @@ passport.use(
     { passReqToCallback: true, usernameField: "email" },
     async (req, email, password, done) => {
       try {
-        const data = req.body;
+        let data = req.body;
         if (!data.city) {
           //const error = new Error("Invalid data");
           //error.statusCode = 400;
@@ -35,7 +38,7 @@ passport.use(
             statusCode: 401,
           });
         }
-        data.password = createHash(password);
+        data = new UserDTO(data);
         const response = await usersManager.createOne(data);
         done(null, response);
       } catch (error) {

@@ -3,8 +3,8 @@ import express from "express";
 import { engine } from "express-handlebars";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
+import cors from "cors"
 import __dirname from "./utils.js";
-import dbConnect from "./src/helpers/dbConnect.helper.js";
 import router from "./src/routers/index.router.js";
 import errorHandler from "./src/middlewares/errorHandler.mid.js";
 import pathHandler from "./src/middlewares/pathHandler.mid.js";
@@ -16,7 +16,6 @@ const port = process.env.PORT || 8080;
 const ready = () => {
   console.log("server ready on port " + port);
   console.log("server ready on mode " + args.mode);
-  dbConnect(process.env.MONGO_URL);
 };
 server.listen(port, ready);
 
@@ -31,6 +30,10 @@ server.use(express.static("public"));
 server.use(express.urlencoded({ extended: true }));
 server.use(express.json());
 server.use(cookieParser(process.env.COOKIE_KEY));
+server.use(cors({
+  origin: true, // cuando tengamos la url del front se cambia true por la url
+  credentials: true
+}))
 
 /* routers settings */
 server.use("/", router);
