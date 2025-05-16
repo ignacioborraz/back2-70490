@@ -3,6 +3,7 @@ document.querySelector("#register").addEventListener("click", async () => {
     const data = {
       name: document.querySelector("#name").value,
       date: document.querySelector("#date").value,
+      city: document.querySelector("#city").value,
       email: document.querySelector("#email").value,
       password: document.querySelector("#password").value,
       avatar: document.querySelector("#avatar").value,

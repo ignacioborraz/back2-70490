@@ -57,5 +57,18 @@
     "role": "USER",
     "createdAt": "2025-04-26T18:18:08.931Z",
     "updatedAt": "2025-04-26T18:18:08.931Z"
+  },
+  {
+    "_id": "eac421390fd83a5c3571f89f",
+    "name": "igna",
+    "date": "",
+    "email": "ignacioborraz@hotmail.com",
+    "password": "$2b$10$.DF7J2Xt/n3JjBH7FN5GkOaJmxy9U63vZlcGai3JtrYMdWdkiOE.y",
+    "avatar": "https://cdn-icons-png.flaticon.com/512/266/266033.png",
+    "role": "USER",
+    "isVerify": true,
+    "verifyCode": "1e42bf301bdd95427d95eef5",
+    "createdAt": "2025-05-16T17:42:21.850Z",
+    "updatedAt": "2025-05-16T17:42:21.850Z"
   }
 ]

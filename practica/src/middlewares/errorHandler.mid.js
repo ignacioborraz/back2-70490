@@ -1,3 +1,8 @@
+/**
+ * @errorHandler
+ * depende del error ocurrido
+ * devuelve una respuesta "estandarizada" al cliente del error
+ */
 const errorHandler = (error, req, res, next) => {
   console.log(error);
   const message = error.message || "Server Error";

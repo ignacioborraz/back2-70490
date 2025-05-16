@@ -1,6 +1,5 @@
 import { Router } from "express";
 import passport from "../../middlewares/passport.mid.js";
-import isUser from "../../middlewares/isUser.mid.js";
 
 const authRouter = Router();
 
@@ -51,6 +50,6 @@ authRouter.post(
   passport.authenticate("login", { session: false }),
   login
 );
-authRouter.get("/me", isUser, me);
+authRouter.get("/me", me);
 
 export default authRouter;

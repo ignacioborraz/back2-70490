@@ -1,5 +1,9 @@
+/**
+ * @pathHandler
+ * devuelve una respuesta "estandarizada" al cliente de una ruta no encontrada
+ */
 const pathHandler = (req, res) => {
-  const message = "Not found path";
+  const message = "Not found URL";
   const data = {
     method: req.method,
     url: req.originalUrl,

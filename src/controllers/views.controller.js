@@ -1,8 +1,4 @@
-import {
-  productsManager,
-  usersManager,
-} from "../data/mongo/managers/manager.mongo.js";
-import { cartsManager } from "../data/mongo/managers/carts.mongo.js";
+import { productsManager, usersManager, cartsManager } from "../data/dao.factory.js";
 
 const homeView = async (req, res) => {
   try {
@@ -66,6 +62,15 @@ const loginView = (req, res) => {
     res.status(statusCode).render("error");
   }
 };
+const verifyView = (req, res) => {
+  try {
+    res.status(200).render("verify", { title: "VERIFY YOUR ACCOUNT" });
+  } catch (error) {
+    console.log(error);
+    const statusCode = error.statusCode || 500;
+    res.status(statusCode).render("error");
+  }
+};
 
 export {
   homeView,
@@ -74,4 +79,5 @@ export {
   cartView,
   registerView,
   loginView,
+  verifyView
 };
